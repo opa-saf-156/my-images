@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>哲思镜像 · 灵魂光谱</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #faf7f2;
+            background-image: radial-gradient(circle at 10% 20%, rgba(220, 190, 160, 0.08) 0%, transparent 30%),
+                              radial-gradient(circle at 90% 80%, rgba(160, 140, 120, 0.06) 0%, transparent 40%);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: #2c241e;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+        }
+        .container {
+            max-width: 760px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 252, 248, 0.92);
+            backdrop-filter: blur(4px);
+            border-radius: 48px;
+            padding: 32px 28px;
+            box-shadow: 0 20px 40px -8px rgba(60, 40, 25, 0.12),
+                        0 2px 0 0 #e5d5c2 inset,
+                        0 -2px 0 0 #fefcf9 inset;
+            border: 1px solid #dccfc0;
+        }
+        .header { text-align: center; margin-bottom: 20px; }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600; font-size: 2.6rem; letter-spacing: 3px;
+            color: #3f3023; text-shadow: 2px 2px 0 rgba(230, 210, 190, 0.2);
+            margin-bottom: 4px;
+        }
+        .subhead {
+            font-size: 0.9rem; font-weight: 400; color: #7b6852; letter-spacing: 2px;
+            text-transform: uppercase; border-bottom: 1px solid #d6c4b1;
+            padding-bottom: 14px; margin-bottom: 8px;
+        }
+        .progress-area { margin: 12px 0 24px; }
+        .progress-text {
+            display: flex; justify-content: space-between; font-size: 0.9rem;
+            color: #5f4a33; margin-bottom: 6px; font-weight: 500;
+        }
+        .progress-bar-bg {
+            height: 8px; background: #e2d2c1; border-radius: 20px; overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .progress-bar-fill {
+            height: 100%; width: 0%; background: #7a5f40; border-radius: 20px;
+            transition: width 0.3s ease;
+        }
+        .quiz-card {
+            background: #ffffffdd; backdrop-filter: blur(2px); border-radius: 36px;
+            padding: 30px 26px; margin: 12px 0 28px; border: 1px solid #e2d2c1;
+            box-shadow: 0 8px 0 #b7a38e, 0 4px 16px rgba(100, 70, 40, 0.05);
+        }
+        .q-header {
+            display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px;
+            border-bottom: 2px dotted #d1bfab; padding-bottom: 14px;
+        }
+        .q-num-badge {
+            background: #7a5f40; color: #faf3ea; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            font-size: 1.3rem; font-weight: 700; box-shadow: 0 4px 0 #4f3a28;
+        }
+        .q-text {
+            font-family: 'Cormorant Garamond', serif; font-weight: 600;
+            font-size: 1.7rem; line-height: 1.3; color: #3a2c1e;
+        }
+        .options-list { display: flex; flex-direction: column; gap: 14px; margin: 16px 0 8px; }
+        .option-item {
+            display: flex; align-items: flex-start; gap: 16px; padding: 14px 20px;
+            border-radius: 40px 18px 18px 40px; background: #f6f0e8;
+            border: 1.5px solid #dccbbb; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .option-item:hover { background: #e7d9ca; border-color: #a58357; }
+        .option-item.selected {
+            background: #d4c1ab; border: 2px solid #6f5238;
+            box-shadow: 0 4px 0 #7a5f40, 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .option-letter { font-weight: 700; color: #6f5238; font-size: 1.2rem; min-width: 24px; }
+        .option-text { font-size: 1.02rem; font-weight: 400; color: #2c241e; }
+        .nav-buttons {
+            display: flex; justify-content: space-between; align-items: center;
+            margin: 18px 0 8px;
+        }
+        .nav-btn {
+            background: #e1d3c3; border: 1px solid #b7a38e; color: #3a2c1e;
+            font-weight: 600; font-size: 1rem; padding: 10px 22px; border-radius: 40px;
+            box-shadow: 0 4px 0 #9f8b78; cursor: pointer; transition: all 0.1s;
+            min-width: 100px; text-align: center; backdrop-filter: blur(2px);
+        }
+        .nav-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #9f8b78; }
+        .nav-btn:disabled {
+            opacity: 0.4; pointer-events: none; box-shadow: 0 2px 0 #9f8b78; transform: none;
+        }
+        .reset-btn { background: #b8a692; box-shadow: 0 4px 0 #7f6e5c; }
+        .result-card {
+            margin-top: 24px; background: #e4d7c8; border-radius: 48px 48px 48px 12px;
+            padding: 32px 28px; border-left: 12px solid #5f4a33;
+            box-shadow: inset 0 2px 6px #f5ede3, 0 16px 24px -8px rgba(60, 40, 20, 0.18);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .philo-avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50% 30% 50% 30% / 30% 50% 30% 50%;
+            object-fit: cover;
+            border: 6px solid #f3e9de;
+            box-shadow: 0 10px 0 #7a5f40, 0 8px 20px rgba(0,0,0,0.15);
+            background: #d4c1ab;
+            margin-bottom: 18px;
+        }
+        .avatar-placeholder {
+            width: 180px;
+            height: 180px;
+            border-radius: 50% 30% 50% 30% / 30% 50% 30% 50%;
+            background: #a58357;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 6px solid #f3e9de;
+            box-shadow: 0 10px 0 #7a5f40, 0 8px 20px rgba(0,0,0,0.15);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            color: #f3e9de;
+            margin-bottom: 18px;
+        }
+        .result-philo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: #2f200f;
+            line-height: 1.1;
+        }
+        .result-era {
+            margin-top: 8px;
+            font-style: italic;
+            color: #5f4a33;
+            font-size: 1.1rem;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 14px 20px;
+            margin: 24px 0 18px;
+            background: #f3eadf;
+            padding: 18px 22px;
+            border-radius: 32px;
+        }
+        .label { font-weight: 700; color: #4f3c28; letter-spacing: 0.5px; }
+        .thought-box {
+            background: #fbf3e9;
+            padding: 20px 24px;
+            border-radius: 32px 8px 32px 8px;
+            font-style: italic;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            border-left: 8px solid #7a5f40;
+        }
+        .quote-block {
+            background: #d9c9b6;
+            padding: 18px 22px;
+            border-radius: 24px 4px 24px 4px;
+            margin: 20px 0 16px;
+            color: #2c1f12;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: inset 0 1px 4px #f2e6da, 0 4px 0 #6f5a44;
+        }
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 14px;
+            margin: 18px 0 8px;
+            justify-content: center;
+        }
+        .keyword {
+            background: #5f4a33;
+            color: #f3e9de;
+            padding: 6px 22px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .footnote {
+            margin-top: 28px;
+            color: #5b4c3b;
+            text-align: right;
+            font-style: italic;
+        }
+        .hidden { display: none !important; }
+        .warning-msg {
+            color: #b1531e; text-align: center; margin: 16px 0;
+        }
+        .image-note {
+            font-size: 0.85rem; color: #7b6852; margin-top: 10px; text-align: center;
+        }
+        .rich-desc {
+            margin: 10px 0 5px;
+            font-size: 1rem;
+            color: #3e2f20;
+        }
+        @media (max-width: 500px) {
+            .container { padding: 20px 16px; }
+            h1 { font-size: 2.2rem; }
+            .q-text { font-size: 1.4rem; }
+            .philo-avatar, .avatar-placeholder { width: 150px; height: 150px; }
+            .result-philo { font-size: 2.6rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>ἰδέα · 哲思镜像</h1>
+        <div class="subhead">灵魂的哲学光谱</div>
+    </div>
+    <div class="progress-area">
+        <div class="progress-text">
+            <span id="progressCurrent">第1题</span>
+            <span id="progressTotal">/ 15</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 6.67%;"></div>
+        </div>
+    </div>
+    <div id="quizSection">
+        <div id="questionPanel" class="quiz-card">
+            <div class="q-header">
+                <span class="q-num-badge" id="qNumDisplay">1</span>
+                <span class="q-text" id="qText">加载中...</span>
+            </div>
+            <div id="optionsContainer" class="options-list"></div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn" disabled>← 上一题</button>
+            <button class="nav-btn" id="nextBtn">下一题 →</button>
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 8px;">
+            <button class="nav-btn reset-btn" id="resetBtn">⟲ 重新开始</button>
+        </div>
+    </div>
+    <div id="resultPanel" class="result-card hidden">
+        <div class="result-header">
+            <div id="avatarContainer"></div>
+            <div>
+                <div class="result-philo" id="resultName"></div>
+                <div class="result-era" id="resultEra"></div>
+            </div>
+        </div>
+        <div class="detail-grid">
+            <span class="label">学派 / 传统</span><span id="resultSchool"></span>
+            <span class="label">核心著作</span><span id="resultWorks"></span>
+        </div>
+        <div id="resultQuote" class="quote-block"></div>
+        <div class="thought-box" id="resultThought"></div>
+        <div class="rich-desc" id="richDescription"></div>
+        <div class="keywords" id="resultKeywords"></div>
+        <div class="footnote">----- 你的哲思镜像，唯一重合 -----</div>
+        <div class="image-note" id="imagePathNote"></div>
+        <div style="margin-top: 24px; text-align: center;">
+            <button class="nav-btn reset-btn" id="resetFromResultBtn">⟲ 重新探索</button>
+        </div>
+    </div>
+    <div id="warningMsg" class="warning-msg"></div>
+</div>
+<script>
+(function(){
+    "use strict";
+
+    // ========== 图片路径配置区（已替换为 jsDelivr CDN 稳定链接） ==========
+    const IMAGE_PATHS = {
+        1: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E6%B3%B0%E5%8B%92%E6%96%AF.webp",      // 泰勒斯
+        2: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E8%B5%AB%E6%8B%89%E5%85%8B%E5%88%A9%E7%89%B9.jpeg", // 赫拉克利特
+        3: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%B7%B4%E9%97%A8%E5%B0%BC%E5%BE%B7.jpeg", // 巴门尼德
+        4: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E8%8B%8F%E6%A0%BC%E6%8B%89%E5%BA%95.jpeg", // 苏格拉底
+        5: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E6%9F%8F%E6%8B%89%E5%9B%BE.jpeg",       // 柏拉图（修正路径）
+        6: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E4%BA%9A%E9%87%8C%E5%A3%AB%E5%A4%9A%E5%BE%B7.jpeg", // 亚里士多德
+        7: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E4%BC%8A%E5%A3%81%E9%B8%A0%E9%B2%81.png",   // 伊壁鸠鲁
+        8: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E8%8A%9D%E8%AF%BA%EF%BC%88%E6%96%AF%E5%A4%9A%E4%BA%9A%EF%BC%89.jpeg", // 芝诺(斯多亚)
+        9: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E9%A9%AC%E5%8F%AF%C2%B7%E5%A5%A5%E5%8B%92%E7%95%99.jpeg", // 马可·奥勒留
+        10: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E8%A5%BF%E5%A1%9E%E7%BD%97.webp",      // 西塞罗
+        11: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%A5%A5%E5%8F%A4%E6%96%AF%E4%B8%81.jpeg", // 奥古斯丁
+        12: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E6%89%98%E9%A9%AC%E6%96%AF%C2%B7%E9%98%BF%E5%A5%8E%E9%82%A3.jpeg", // 托马斯·阿奎那
+        13: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%A5%A5%E5%8D%A1%E5%A7%86%E7%9A%84%E5%A8%81%E5%BB%89.jpeg", // 奥卡姆的威廉
+        14: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E7%AC%9B%E5%8D%A1%E5%B0%94.jpeg",     // 笛卡尔
+        15: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E6%96%AF%E5%AE%BE%E8%AF%BA%E8%8E%8E.jpeg", // 斯宾诺莎
+        16: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E8%8E%B1%E5%B8%83%E5%B0%BC%E8%8C%A8.jpeg", // 莱布尼茨
+        17: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E6%B4%9B%E5%85%8B.png",           // 洛克
+        18: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E8%B4%9D%E5%85%8B%E8%8E%B1.jpeg",   // 贝克莱
+        19: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E4%BC%91%E8%B0%9F.jpeg",         // 休谟
+        20: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%8D%A2%E6%A2%AD.png",          // 卢梭
+        21: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%BA%B7%E5%BE%B7.jpeg",         // 康德
+        22: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E9%BB%91%E6%A0%BC%E5%B0%94.jpeg", // 黑格尔
+        23: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%8F%94%E6%9C%AC%E5%8D%8E.jpeg", // 叔本华
+        24: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%B0%BC%E9%87%87.jpeg",         // 尼采
+        25: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E9%A9%AC%E5%85%8B%E6%80%9D.jpeg", // 马克思
+        26: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%85%8B%E5%B0%94%E5%87%AF%E9%83%AD%E5%B0%94.jpeg", // 克尔凯郭尔
+        27: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E6%B5%B7%E5%BE%B7%E6%A0%BC%E5%B0%94.jpeg", // 海德格尔
+        28: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E8%90%A8%E7%89%B9.jpeg",         // 萨特
+        29: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E7%BB%B4%E7%89%B9%E6%A0%B9%E6%96%AF%E5%9D%A6.jpeg", // 维特根斯坦
+        30: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E7%A6%8F%E6%9F%AF.jpeg",         // 福柯
+        31: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%AD%94%E5%AD%90.jpeg",         // 孔子
+        32: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E8%80%81%E5%AD%90.jpeg",         // 老子
+        33: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%BA%84%E5%AD%90.jpeg",         // 庄子
+        34: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%AD%9F%E5%AD%90.jpeg",         // 孟子
+        35: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E8%8D%80%E5%AD%90.jpeg",         // 荀子
+        36: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E5%A2%A8%E5%AD%90.jpeg",         // 墨子
+        37: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E9%9F%A9%E9%9D%9E%E5%AD%90.jpeg", // 韩非子
+        38: "https://cdn.jsdelivr.net/gh/opa-saf-156/my-images@main/2026/04/14/%E7%8E%8B%E9%98%B3%E6%98%8E.jpeg" // 王阳明
+    };
+    // =====================================
+
+    const PHILOSOPHERS = [
+        { id:1, name:"泰勒斯", era:"前624-前546 · 古希腊米利都", school:"米利都学派 / 自然哲学", thought:"水是万物本原；万物有灵。", works:"无传世著作", keywords:["本原","水","自然哲学"], quote:"水是万物的始基。", richDesc:"西方哲学史上第一位哲学家，提出“水是本原”，标志着神话思维向理性思维的转变。" },
+        { id:2, name:"赫拉克利特", era:"前535-前475 · 古希腊以弗所", school:"辩证法先驱", thought:"万物皆流；火是本原；对立统一。", works:"《论自然》（残篇）", keywords:["流变","火","逻各斯"], quote:"人不能两次踏进同一条河流。", richDesc:"强调永恒的流变与对立面的统一，认为逻各斯是万物遵循的尺度。" },
+        { id:3, name:"巴门尼德", era:"前515-前450 · 古希腊埃利亚", school:"埃利亚学派", thought:"存在是永恒不变的一；反对变化。", works:"《论自然》", keywords:["存在","不变","理性"], quote:"存在者存在，不存在者不存在。", richDesc:"区分了真理之路与意见之路，奠定了形而上学中“存在”问题的基石。" },
+        { id:4, name:"苏格拉底", era:"前469-前399 · 雅典", school:"道德哲学 / 辩证法", thought:"认识你自己；美德即知识；助产术。", works:"无著作，由柏拉图记录", keywords:["自知无知","美德","诘问"], quote:"我只知道我一无所知。", richDesc:"将哲学从天上拉回人间，通过对话与反诘追求普遍定义与德性知识。" },
+        { id:5, name:"柏拉图", era:"前427-前347 · 雅典", school:"理念论 / 客观唯心", thought:"理念世界真实；现象世界模仿；理想国。", works:"《理想国》《斐多篇》", keywords:["理念","洞穴","灵魂"], quote:"理想存在于理念世界。", richDesc:"创立理念论，认为可感世界只是理念的摹本，构筑了西方哲学两千年的形而上学传统。" },
+        { id:6, name:"亚里士多德", era:"前384-前322 · 马其顿", school:"逍遥学派 / 形而上学", thought:"四因说；形式与质料；中道伦理。", works:"《形而上学》《尼各马可伦理学》", keywords:["实体","四因","中道"], quote:"吾爱吾师，吾更爱真理。", richDesc:"百科全书式的学者，创立逻辑学，提出实体学说与德性伦理学，影响深远。" },
+        { id:7, name:"伊壁鸠鲁", era:"前341-前270 · 古希腊", school:"伊壁鸠鲁主义", thought:"快乐是最高善；原子论；远离纷扰。", works:"《致希罗多德信》", keywords:["快乐","ataraxia","原子"], quote:"快乐是幸福生活的开端和归宿。", richDesc:"主张通过知识消除恐惧，追求身体的无痛苦与灵魂的无纷扰（ataraxia）。" },
+        { id:8, name:"芝诺(斯多亚)", era:"前334-前262 · 古希腊", school:"斯多葛学派", thought:"顺应自然与理性；克制情感；世界公民。", works:"《共和国》（残篇）", keywords:["自然法","理性","节制"], quote:"顺应自然生活。", richDesc:"斯多葛学派创始人，认为德性在于与宇宙理性一致，主张克制激情、履行义务。" },
+        { id:9, name:"马可·奥勒留", era:"121-180 · 罗马帝国", school:"晚期斯多葛", thought:"自省；接受命运；内心自由。", works:"《沉思录》", keywords:["自省","理性","命运"], quote:"宇宙是变化，人生是意见。", richDesc:"作为罗马皇帝，在鞍马劳顿中写下《沉思录》，展现斯多葛式的内心宁静与自律。" },
+        { id:10, name:"西塞罗", era:"前106-前43 · 罗马", school:"折中主义 / 政治哲学", thought:"自然法；共和政体；义务论。", works:"《论共和国》《论义务》", keywords:["自然法","共和","义务"], quote:"智慧是诸善之母。", richDesc:"将希腊哲学拉丁化，阐述自然法、混合政体，对后世政治哲学影响巨大。" },
+        { id:11, name:"奥古斯丁", era:"354-430 · 北非", school:"教父哲学", thought:"信仰寻求理解；原罪；时间是心灵的延展。", works:"《忏悔录》《上帝之城》", keywords:["信仰","时间","原罪"], quote:"信仰以便理解。", richDesc:"融合柏拉图主义与基督教，深入剖析内在自我、时间与恩典，为中世纪思想奠基。" },
+        { id:12, name:"托马斯·阿奎那", era:"1225-1274 · 意大利", school:"经院哲学", thought:"五路证明上帝存在；自然法；理性与信仰调和。", works:"《神学大全》", keywords:["存在","自然法","五路"], quote:"恩典并不摧毁自然，而是成全它。", richDesc:"经院哲学集大成者，以亚里士多德哲学论证基督教教义，构建宏大的神学体系。" },
+        { id:13, name:"奥卡姆的威廉", era:"1285-1347 · 英国", school:"唯名论", thought:"如无必要，勿增实体；唯名论。", works:"《逻辑大全》", keywords:["奥卡姆剃刀","唯名论"], quote:"如无必要，勿增实体。", richDesc:"以“奥卡姆剃刀”著称，坚持唯名论，推动经验科学与近代思想的转向。" },
+        { id:14, name:"笛卡尔", era:"1596-1650 · 法国", school:"理性主义 / 近代哲学之父", thought:"我思故我在；心物二元论；普遍怀疑。", works:"《第一哲学沉思录》", keywords:["我思","怀疑","二元论"], quote:"我思故我在。", richDesc:"近代哲学之父，通过普遍怀疑确立“我思”为第一原则，开启主体性哲学。" },
+        { id:15, name:"斯宾诺莎", era:"1632-1677 · 荷兰", school:"理性主义 / 泛神论", thought:"神即自然；实体一元论；自由即对必然的认识。", works:"《伦理学》", keywords:["实体","泛神论","自由"], quote:"自由是对必然的认识。", richDesc:"以几何学方式论证伦理学，提出神即自然的泛神论，追求至高的理智之爱。" },
+        { id:16, name:"莱布尼茨", era:"1646-1716 · 德国", school:"理性主义", thought:"单子论；前定和谐；最好世界。", works:"《单子论》《神义论》", keywords:["单子","前定和谐"], quote:"我们生活在所有可能世界中最好的一个。", richDesc:"提出单子论与前定和谐，试图调和机械论与目的论，是杰出的逻辑学家与数学家。" },
+        { id:17, name:"洛克", era:"1632-1704 · 英国", school:"经验主义 / 自由主义", thought:"心灵白板；天赋人权；三权分立雏形。", works:"《人类理解论》《政府论》", keywords:["白板","经验","自然权利"], quote:"心灵是一张白纸。", richDesc:"经验主义奠基人，主张知识来源于经验，并系统阐述自然权利与政府论。" },
+        { id:18, name:"贝克莱", era:"1685-1753 · 爱尔兰", school:"经验主义 / 主观唯心", thought:"存在就是被感知；物是观念的集合。", works:"《人类知识原理》", keywords:["感知","观念","唯心"], quote:"存在就是被感知。", richDesc:"将经验论推向极端，否定物质实体，认为存在即被感知，依赖上帝的心灵。" },
+        { id:19, name:"休谟", era:"1711-1776 · 英国", school:"经验主义 / 怀疑论", thought:"因果是习惯联想；自我是一束知觉。", works:"《人性论》", keywords:["因果","怀疑","归纳"], quote:"理性是激情的奴隶。", richDesc:"以怀疑论打破独断论迷梦，质疑因果必然性与实体自我，深刻影响康德。" },
+        { id:20, name:"卢梭", era:"1712-1778 · 法国", school:"启蒙 / 社会契约", thought:"人生而自由；公意；自然善。", works:"《社会契约论》", keywords:["自由","公意","平等"], quote:"人生而自由，却无往不在枷锁之中。", richDesc:"探讨人类不平等的起源，主张公意与社会契约，是浪漫主义与法国大革命的精神先驱。" },
+        { id:21, name:"康德", era:"1724-1804 · 德国", school:"德国古典哲学", thought:"人为自然立法；先天综合判断；义务论。", works:"三大批判", keywords:["物自体","绝对命令"], quote:"人为自然立法。", richDesc:"发动哲学上的“哥白尼革命”，调和经验论与唯理论，奠定德国古典哲学基础。" },
+        { id:22, name:"黑格尔", era:"1770-1831 · 德国", school:"绝对唯心论 / 辩证法", thought:"绝对精神自我展开；正反合；历史理性。", works:"《精神现象学》", keywords:["辩证法","扬弃","绝对精神"], quote:"凡是现实的都是合理的。", richDesc:"建立庞大的辩证法体系，认为绝对精神通过历史辩证运动实现自身。" },
+        { id:23, name:"叔本华", era:"1788-1860 · 德国", school:"唯意志论 / 悲观主义", thought:"世界是意志的表象；生命意志；否定意志。", works:"《作为意志和表象的世界》", keywords:["意志","表象","悲观"], quote:"人生实如钟摆，在痛苦与倦怠之间摆动。", richDesc:"提出世界是我的表象、世界的本质是生命意志，开创非理性主义与悲观哲学。" },
+        { id:24, name:"尼采", era:"1844-1900 · 德国", school:"存在主义先驱 / 权力意志", thought:"上帝已死；超人；永恒轮回；重估一切价值。", works:"《查拉图斯特拉如是说》", keywords:["超人","权力意志","轮回"], quote:"上帝已死。", richDesc:"以锤子从事哲学，宣告上帝之死，呼唤超人，重估一切价值，深刻影响后现代思想。" },
+        { id:25, name:"马克思", era:"1818-1883 · 德国", school:"辩证唯物主义", thought:"阶级斗争；剩余价值；经济基础决定上层建筑。", works:"《资本论》《共产党宣言》", keywords:["异化","阶级","历史规律"], quote:"哲学家们只是用不同的方式解释世界，而问题在于改变世界。", richDesc:"创立历史唯物主义，揭示资本主义运行规律，强调实践与改变世界。" },
+        { id:26, name:"克尔凯郭尔", era:"1813-1855 · 丹麦", school:"存在主义之父", thought:"主观真理；信仰跳跃；个体生存。", works:"《非此即彼》", keywords:["个体","信仰","焦虑"], quote:"真理是主观的。", richDesc:"存在主义先驱，强调个体性与主观真理，批判黑格尔体系，探讨焦虑、绝望与信仰。" },
+        { id:27, name:"海德格尔", era:"1889-1976 · 德国", school:"存在主义 / 现象学", thought:"此在；向死而生；存在与时间。", works:"《存在与时间》", keywords:["此在","畏","本真"], quote:"人，诗意地栖居。", richDesc:"重提存在问题，分析此在的生存结构，揭示技术时代的存在遗忘。" },
+        { id:28, name:"萨特", era:"1905-1980 · 法国", school:"存在主义", thought:"存在先于本质；自由选择；他人即地狱。", works:"《存在与虚无》", keywords:["自由","选择","自欺"], quote:"存在先于本质。", richDesc:"将存在主义发扬光大，强调人的绝对自由与责任，人是自己选择的总和。" },
+        { id:29, name:"维特根斯坦", era:"1889-1951 · 奥地利/英国", school:"分析哲学 / 语言哲学", thought:"前期：语言图式论；后期：语言游戏。", works:"《逻辑哲学论》《哲学研究》", keywords:["语言","逻辑","用法"], quote:"凡不可说的，应当沉默。", richDesc:"20世纪哲学巨匠，前期为语言划界，后期转向日常语言分析，治疗哲学病。" },
+        { id:30, name:"福柯", era:"1926-1984 · 法国", school:"后结构主义", thought:"知识即权力；规训；话语。", works:"《规训与惩罚》", keywords:["权力","话语","规训"], quote:"知识即权力。", richDesc:"通过知识考古学与系谱学，揭示权力与知识的共生关系，批判现代规训社会。" },
+        { id:31, name:"孔子", era:"春秋 · 中国", school:"儒家", thought:"仁、礼、中庸、为政以德。", works:"《论语》", keywords:["仁","礼","君子"], quote:"己所不欲，勿施于人。", richDesc:"儒家学派创始人，以仁释礼，奠定中华文化基本性格，影响东亚两千余年。" },
+        { id:32, name:"老子", era:"春秋 · 中国", school:"道家", thought:"道；无为；柔弱胜刚强。", works:"《道德经》", keywords:["道","无为","自然"], quote:"道可道，非常道。", richDesc:"道家始祖，提出道法自然、无为而治，其思想深邃玄远，影响中国哲学与美学。" },
+        { id:33, name:"庄子", era:"战国 · 中国", school:"道家", thought:"齐物；逍遥；坐忘。", works:"《庄子》", keywords:["逍遥","齐物","物化"], quote:"天地与我并生，万物与我为一。", richDesc:"以寓言阐发逍遥游与齐物论，追求精神的绝对自由与超越。" },
+        { id:34, name:"孟子", era:"战国 · 中国", school:"儒家", thought:"性善；仁政；民贵君轻。", works:"《孟子》", keywords:["性善","浩然之气"], quote:"生于忧患，死于安乐。", richDesc:"亚圣，主张性善论与仁政，提出“民为贵”，高扬道德主体性。" },
+        { id:35, name:"荀子", era:"战国 · 中国", school:"儒家", thought:"性恶；化性起伪；礼治。", works:"《荀子》", keywords:["性恶","礼法"], quote:"青，取之于蓝而青于蓝。", richDesc:"主张性恶论，强调后天学习与礼法规范，对法家亦有启发。" },
+        { id:36, name:"墨子", era:"战国 · 中国", school:"墨家", thought:"兼爱、非攻、尚贤。", works:"《墨子》", keywords:["兼爱","非攻"], quote:"兼相爱，交相利。", richDesc:"墨家创始人，倡导兼爱、非攻、节用，重视逻辑与科学精神。" },
+        { id:37, name:"韩非子", era:"战国 · 中国", school:"法家", thought:"法、术、势；君主集权。", works:"《韩非子》", keywords:["法治","权术"], quote:"世异则事异。", richDesc:"法家集大成者，将法、术、势结合，为中央集权提供理论依据。" },
+        { id:38, name:"王阳明", era:"明 · 中国", school:"心学", thought:"心即理；致良知；知行合一。", works:"《传习录》", keywords:["心学","良知"], quote:"知行合一。", richDesc:"心学集大成者，提出“致良知”与“知行合一”，强调道德主体的自觉与行动。" }
+    ];
+
+    const questions = [
+        { q: "你认为世界的终极本原或最根本的实在是什么？", options: [
+            { text: "一种永恒流动、构成万物的基本元素或能量，万物由此而生又复归于此。", weights: {1:3,2:2} },
+            { text: "一个抽象、完美、永恒的原型世界，我们感知的世界只是其不完美的投影。", weights: {5:4} },
+            { text: "一种无法言说、超越名相的绝对法则或原理，它先于天地而存在。", weights: {32:4,33:2} },
+            { text: "具体的、由形式与质料结合而成的独立个体（实体），这才是第一性的存在。", weights: {6:4} },
+            { text: "某种唯一、不变、不可分割的“存在”本身，变化只是感官的幻觉。", weights: {3:4} },
+            { text: "我无法确信存在一个独立于意识的“外部世界”，我们所知的只是感知的集合。", weights: {18:4,19:2} }
+        ]},
+        { q: "关于知识与真理，你更接近哪种态度？", options: [
+            { text: "真理是客观的，但必须通过严谨的理性推理和逻辑演绎才能获得。", weights: {14:3,15:2} },
+            { text: "我们所有的知识都起源于感官经验，心灵最初是一张白纸。", weights: {17:4,19:2} },
+            { text: "不是我们发现真理，而是我们为世界“立法”——我们的认知结构塑造了经验。", weights: {21:4} },
+            { text: "真理是主观且个人的，它关乎个体充满激情的抉择和生存体验。", weights: {26:4,28:2} },
+            { text: "追求真理就是剖析我们使用的语言，很多哲学问题源于语言的误用。", weights: {29:4} },
+            { text: "知识与真理并非纯洁中立，它们总是与权力结构和社会话语相互建构。", weights: {30:4} }
+        ]},
+        { q: "在伦理与道德领域，你最核心的追求是？", options: [
+            { text: "过一种经过理性审视的生活，追求智慧与德性的内在统一。", weights: {4:4} },
+            { text: "寻求情感的平静与灵魂的安宁，避免痛苦与纷扰，享受简单的快乐。", weights: {7:4} },
+            { text: "遵循理性与宇宙的自然法则，克制情感，履行命中注定的责任。", weights: {8:3,9:3} },
+            { text: "遵循一条绝对普世的道德律令：你的行动准则应能成为所有人的法则。", weights: {21:4} },
+            { text: "勇敢地挑战传统价值体系，创造属于自己的价值，成为真正的“自己”。", weights: {24:4} },
+            { text: "在实践中把握恰当的尺度，避免过度与不及，追求和谐的中道。", weights: {6:3,31:2} }
+        ]},
+        { q: "对于“自我”或“我是谁”，你的观点更接近？", options: [
+            { text: "没有一个固定不变的“自我”，它只是一系列知觉和经验的连续束。", weights: {19:4} },
+            { text: "自我是一个先验的认知前提，是统合所有经验的意识统一体。", weights: {21:3,14:1} },
+            { text: "自我并非现成之物，而是“在世界中存在”的一种动态、开放的可能性。", weights: {27:4} },
+            { text: "真正的自我是内在的道德本心或良知，通过内省与实践即可呈现。", weights: {38:4,34:2} },
+            { text: "“自我”是历史文化、权力关系和社会规范塑造的产物，并非天生。", weights: {30:3} },
+            { text: "自我是自由意志的体现，其本质由不断的选择和行动所塑造。", weights: {28:4} }
+        ]},
+        { q: "面对生命的痛苦、世界的荒谬或不可抗拒的命运，你的根本态度是？", options: [
+            { text: "生命的本质是充满欲望与挣扎的痛苦，真正的解脱在于对生命意志的否定。", weights: {23:4} },
+            { text: "不仅要忍受命运，更要热爱命运，肯定生命的全部，包括其痛苦。", weights: {24:3,9:2} },
+            { text: "在理性的尽头，需要一次信仰的跳跃，在悖论中拥抱超越性。", weights: {26:4,11:2} },
+            { text: "坦然接受无法控制的事物，专注于内心德性与平静，以此获得自由。", weights: {8:3,9:3} },
+            { text: "哲学的目的不仅是理解世界，更是改变世界。行动是对抗荒谬的最好方式。", weights: {25:4} },
+            { text: "与大道合一，顺应自然之流变，超然于世俗的得失与祸福。", weights: {33:4,32:2} }
+        ]},
+        { q: "如何理解“人的自由”？", options: [
+            { text: "自由不是为所欲为，而是深刻认识到必然性并依此而行。", weights: {15:4,22:2} },
+            { text: "人生而自由，但社会制度与偏见处处束缚着这种天赋自由。", weights: {20:4} },
+            { text: "人注定是自由的，这种自由体现在我们必须为每个选择负全责。", weights: {28:4} },
+            { text: "最高级的自由是自律，即服从由自己理性所立下的法则。", weights: {21:3} },
+            { text: "真正的自由是精神上的无限超越，挣脱物役与成见的逍遥游。", weights: {33:4,32:2} },
+            { text: "自由是在特定的历史与社会条件下，进行可能性的选择与实践。", weights: {25:2,30:2} }
+        ]},
+        { q: "理想的社会/政治秩序应基于何种原则？", options: [
+            { text: "由最具智慧和德性的人进行治理，或建立一个各等级各司其职的正义体系。", weights: {5:4} },
+            { text: "核心在于限制权力、保障人的基本自然权利（如生命、自由、财产）。", weights: {17:3,10:2} },
+            { text: "基于所有成员共同意志（公意）缔结的社会契约，主权在民。", weights: {20:4} },
+            { text: "必须从根本上变革造成剥削的经济制度，历史由阶级斗争推动。", weights: {25:4} },
+            { text: "最好的治理是“不干涉”，顺应百姓的自然状态，清静无为。", weights: {32:4} },
+            { text: "倡导无差别的普遍相爱（兼爱），反对侵略战争，崇尚贤能。", weights: {36:4} }
+        ]},
+        { q: "你对“变化”与“永恒”的深层直觉是？", options: [
+            { text: "变化是绝对的，一切皆流，无物常驻。你无法两次踏进同一条河流。", weights: {2:4} },
+            { text: "变化是表面的假象，真正的实在是唯一且永恒不变的。", weights: {3:4} },
+            { text: "永恒通过变化来实现自身，世界是动态的辩证发展过程。", weights: {22:4} },
+            { text: "变化中有不变的法则（如逻各斯、道），把握后者方能理解前者。", weights: {2:2,32:2} },
+            { text: "变化是循环往复的，历史或宇宙以一种周期性的模式运动。", weights: {24:2,2:1} },
+            { text: "关注具体的变化过程本身，而非抽象的水恒实体。", weights: {27:2,30:2} }
+        ]},
+        { q: "对于宗教、神灵或超越性的存在，你的基本立场是？", options: [
+            { text: "神与宇宙、自然是同一的，万物皆在神之中，神亦在万物之中（泛神论）。", weights: {15:4} },
+            { text: "信仰是理性的前提，超越性的恩典与启示是通往真理的必经之路。", weights: {11:4,12:2} },
+            { text: "传统的上帝观念已经失效，人必须依靠自己，成为价值的创造者。", weights: {24:4} },
+            { text: "上帝是人类道德实践的必要公设，但无法通过理论理性证明。", weights: {21:2} },
+            { text: "对于终极的、超越言语的实在，最好保持沉默。", weights: {29:3,32:2} },
+            { text: "对此持不可知或怀疑态度，更关注现世的生活与人类事务。", weights: {19:2,7:2} }
+        ]},
+        { q: "你更向往或欣赏哪种生活方式？", options: [
+            { text: "沉思的生活：专注于思考真理、追求智慧与精神的完善。", weights: {4:3,6:2,5:2} },
+            { text: "宁静的生活：远离政治纷扰，在友谊与简单快乐中求得内心安宁。", weights: {7:4,33:2} },
+            { text: "行动的生活：积极介入世界，通过实践创造意义、改造社会。", weights: {28:3,25:2,38:2} },
+            { text: "审美的生活：在艺术创造与鉴赏中超越日常痛苦，找到救赎。", weights: {23:3,24:2} },
+            { text: "日常的生活：深入描述和理解日常语言与普通的生活形式。", weights: {29:3} },
+            { text: "修身的生活：在伦常日用中不断砥砺品德，达到内在与外在的和谐。", weights: {31:3,34:2} }
+        ]},
+        { q: "如何看待逻辑、语言与思想/世界的关系？", options: [
+            { text: "逻辑是哲学的锋利工具，应坚持简洁经济的原则，剔除不必要的假设。", weights: {13:4,6:1} },
+            { text: "语言并非工具，而是人栖息之所，是存在得以显现的场所。", weights: {27:3} },
+            { text: "哲学问题的产生源于对语言的误解，澄清语言就能消解这些问题。", weights: {29:4} },
+            { text: "语言与名称必须符合实在与规范，正名是秩序的基础。", weights: {31:2,35:2} },
+            { text: "语言本身是权力运作的场域，它塑造了我们认知世界的可能。", weights: {30:4} },
+            { text: "逻辑结构反映了世界的结构，语言是描述事实的逻辑图像。", weights: {29:2,14:2} }
+        ]},
+        { q: "你如何看待“欲望”在人生中的角色？", options: [
+            { text: "欲望是生命痛苦的根本源泉，真正的幸福在于克制乃至消除欲望。", weights: {23:4,8:2} },
+            { text: "欲望是生命的本质动力，应被肯定和释放，而不是压抑。", weights: {24:4} },
+            { text: "自然的、必要的欲望可以满足，但应避免虚浮的欲望，追求中道。", weights: {6:3,31:2} },
+            { text: "欲望是权力意志的表现，是创造与超越的驱动力量。", weights: {24:3} },
+            { text: "关键在于觉察欲望的源头（良知），导其向善，而非简单灭除。", weights: {38:3,34:1} },
+            { text: "欲望是社会构建的产物，对其分析应置于具体的历史文化中。", weights: {30:2} }
+        ]},
+        { q: "你如何理解“历史”的本质与动力？", options: [
+            { text: "历史是某种绝对精神或理性逐步自我实现、走向自由的过程。", weights: {22:4} },
+            { text: "历史从根本上说是物质生产与阶级斗争的历史。", weights: {25:4} },
+            { text: "历史是循环的，文明兴衰、观念往复，没有真正的进步。", weights: {2:2,24:2} },
+            { text: "历史是充满断裂、偶然的权力斗争史，而非连续的进步叙事。", weights: {30:4} },
+            { text: "历史是伟人或“超人”意志的体现，他们为时代赋予价值。", weights: {24:3} },
+            { text: "历史是各种文化、观念和生活方式竞争与交融的场域。", weights: {19:2,10:2} }
+        ]},
+        { q: "你认为获取可靠知识或智慧最根本的途径是？", options: [
+            { text: "对话与辩证：通过不断诘问、反驳和检验，逼近真理。", weights: {4:4,22:2} },
+            { text: "怀疑与奠基：从普遍怀疑出发，找到一个无可置疑的基点进行演绎。", weights: {14:4} },
+            { text: "经验与归纳：从大量具体观察中总结规律，尽管无法获得绝对必然性。", weights: {19:4} },
+            { text: "直觉与洞察：直接把握事物的本质，回到现象本身进行描述。", weights: {27:2} },
+            { text: "实践与体认：在具体的道德和实践活动中领会真理，知行合一。", weights: {38:3} },
+            { text: "逻辑与演算：通过符号逻辑和数学般的严密推理构建知识体系。", weights: {16:3,29:2} }
+        ]},
+        { q: "以下哪种内心独白最符合你的气质？", options: [
+            { text: "我最大的智慧，就是知道自己一无所知。认识自己是一生的功课。", weights: {4:4} },
+            { text: "给我一个坚实支点，我能用理性厘清整个世界。我相信思维的力量。", weights: {14:3} },
+            { text: "成为你自己！不要追随时代或他人，要释放你内在的生命力。", weights: {24:4} },
+            { text: "你一无所有，除了自由。你必须选择，并为此承担全部重负。", weights: {28:4} },
+            { text: "天地万物与我本为一体，何须外求？内在的超越即是永恒。", weights: {33:4} },
+            { text: "世界并非等待你去理解，而是等待你去改变。行动高于沉思。", weights: {25:3,28:2} }
+        ]}
+    ];
+
+    const totalQ = questions.length;
+    let currentIndex = 0;
+    let answers = new Array(totalQ).fill(null);
+    const quizSection = document.getElementById('quizSection');
+    const resultPanel = document.getElementById('resultPanel');
+    const qNumDisplay = document.getElementById('qNumDisplay');
+    const qText = document.getElementById('qText');
+    const optionsDiv = document.getElementById('optionsContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const resetFromResult = document.getElementById('resetFromResultBtn');
+    const progressCurrent = document.getElementById('progressCurrent');
+    const progressTotal = document.getElementById('progressTotal');
+    const progressBarFill = document.getElementById('progressBarFill');
+    const warningMsg = document.getElementById('warningMsg');
+    const avatarContainer = document.getElementById('avatarContainer');
+    const imagePathNote = document.getElementById('imagePathNote');
+    const letters = ['A','B','C','D','E','F'];
+
+    function renderQuestion(index) {
+        const qData = questions[index];
+        qNumDisplay.textContent = index + 1;
+        qText.textContent = qData.q;
+        let html = '';
+        qData.options.forEach((opt, optIdx) => {
+            const isSelected = (answers[index] === optIdx);
+            html += `<div class="option-item ${isSelected ? 'selected' : ''}" data-opt-index="${optIdx}">`;
+            html += `<span class="option-letter">${letters[optIdx]}.</span>`;
+            html += `<span class="option-text">${opt.text}</span>`;
+            html += `</div>`;
+        });
+        optionsDiv.innerHTML = html;
+        document.querySelectorAll('.option-item').forEach(el => {
+            el.addEventListener('click', () => {
+                const optIdx = parseInt(el.dataset.optIndex);
+                answers[index] = optIdx;
+                document.querySelectorAll('.option-item').forEach(oe => oe.classList.remove('selected'));
+                el.classList.add('selected');
+                updateNavButtons();
+            });
+        });
+        progressCurrent.textContent = `第${index+1}题`;
+        progressTotal.textContent = `/ ${totalQ}`;
+        progressBarFill.style.width = ((index+1)/totalQ*100) + '%';
+        updateNavButtons();
+    }
+
+    function updateNavButtons() {
+        prevBtn.disabled = (currentIndex === 0);
+        nextBtn.textContent = (currentIndex === totalQ - 1) ? '完成 · 查看结果' : '下一题 →';
+    }
+
+    function allQuestionsAnswered() {
+        return answers.every(a => a !== null);
+    }
+
+    function computeAndShowResult() {
+        if (!allQuestionsAnswered()) {
+            warningMsg.textContent = '⚠️ 您还有题目未作答，请完成全部15题。';
+            return false;
+        }
+        warningMsg.textContent = '';
+        const scores = new Array(PHILOSOPHERS.length+1).fill(0);
+        for (let i=0; i<totalQ; i++) {
+            const optIdx = answers[i];
+            const weights = questions[i].options[optIdx].weights;
+            for (let [phId, w] of Object.entries(weights)) {
+                scores[parseInt(phId)] += w;
+            }
+        }
+        let maxScore = -1, bestId = 1;
+        for (let id=1; id<=PHILOSOPHERS.length; id++) {
+            if (scores[id] > maxScore) { maxScore = scores[id]; bestId = id; }
+        }
+        const p = PHILOSOPHERS.find(x => x.id === bestId);
+        document.getElementById('resultName').innerText = p.name;
+        document.getElementById('resultEra').innerText = p.era;
+        document.getElementById('resultSchool').innerText = p.school;
+        document.getElementById('resultWorks').innerText = p.works;
+        document.getElementById('resultThought').innerHTML = `“${p.thought}”`;
+        document.getElementById('resultQuote').innerText = `“${p.quote}”`;
+        document.getElementById('richDescription').innerText = p.richDesc;
+        const kwDiv = document.getElementById('resultKeywords');
+        kwDiv.innerHTML = p.keywords.map(k => `<span class="keyword">${k}</span>`).join('');
+        const imgPath = IMAGE_PATHS[bestId];
+        avatarContainer.innerHTML = '';
+        if (imgPath && imgPath.trim() !== '') {
+            const img = new Image();
+            img.className = 'philo-avatar';
+            img.referrerPolicy = "no-referrer";
+            img.src = imgPath;
+            img.alt = p.name;
+            img.onload = () => {
+                avatarContainer.innerHTML = '';
+                avatarContainer.appendChild(img);
+                imagePathNote.textContent = `📷 ${p.name}`;
+            };
+            img.onerror = () => {
+                avatarContainer.innerHTML = `<div class="avatar-placeholder">${p.name.charAt(0)}</div>`;
+                imagePathNote.textContent = `⚠️ 图片加载失败，请检查路径：${imgPath}`;
+            };
+            avatarContainer.appendChild(img);
+            imagePathNote.textContent = `⏳ 加载中...`;
+        } else {
+            avatarContainer.innerHTML = `<div class="avatar-placeholder">${p.name.charAt(0)}</div>`;
+            imagePathNote.textContent = `📌 未配置图片路径。`;
+        }
+        quizSection.classList.add('hidden');
+        resultPanel.classList.remove('hidden');
+        return true;
+    }
+
+    function resetQuiz() {
+        currentIndex = 0;
+        answers = new Array(totalQ).fill(null);
+        quizSection.classList.remove('hidden');
+        resultPanel.classList.add('hidden');
+        warningMsg.textContent = '';
+        renderQuestion(0);
+    }
+
+    prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) { currentIndex--; renderQuestion(currentIndex); }
+    });
+    nextBtn.addEventListener('click', () => {
+        if (answers[currentIndex] === null) { warningMsg.textContent = '请先选择一个选项'; return; }
+        warningMsg.textContent = '';
+        if (currentIndex === totalQ - 1) { computeAndShowResult(); }
+        else { currentIndex++; renderQuestion(currentIndex); }
+    });
+    resetBtn.addEventListener('click', resetQuiz);
+    resetFromResult.addEventListener('click', resetQuiz);
+    renderQuestion(0);
+})();
+</script>
+</body>
+</html>
